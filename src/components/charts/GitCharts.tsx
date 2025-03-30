@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GitLog } from "../../services/GitLogService";
 import {
   Chart as ChartJS,
@@ -41,6 +41,84 @@ interface GitChartsProps {
 
 const GitCharts: React.FC<GitChartsProps> = ({ gitLogs }) => {
   const [activeTab, setActiveTab] = useState("timeline");
+  const [filteredLogs, setFilteredLogs] = useState<GitLog[]>(gitLogs);
+
+  // Date range state
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+
+  useEffect(() => {
+    if (gitLogs && gitLogs.length > 0) {
+      // Set initial date range to cover all commits
+      const dates = gitLogs.map((log) => log.date);
+      const minDate = new Date(Math.min(...dates));
+      const maxDate = new Date(Math.max(...dates));
+
+      // Format dates for input[type="date"]
+      setStartDate(formatDateForInput(minDate));
+      setEndDate(formatDateForInput(maxDate));
+
+      // Initial filtering
+      filterLogsByDateRange(gitLogs, minDate, maxDate);
+    }
+  }, [gitLogs]);
+
+  // Format date for date input (YYYY-MM-DD)
+  const formatDateForInput = (date: Date): string => {
+    return date.toISOString().split("T")[0];
+  };
+
+  // Handle date range changes
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newStartDate = e.target.value;
+    setStartDate(newStartDate);
+
+    // Filter logs based on new date range
+    const startTimestamp = new Date(newStartDate).getTime();
+    const endTimestamp = endDate ? new Date(endDate).getTime() : Infinity;
+
+    filterLogsByDateRange(
+      gitLogs,
+      new Date(startTimestamp),
+      new Date(endTimestamp)
+    );
+  };
+
+  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEndDate = e.target.value;
+    setEndDate(newEndDate);
+
+    // Filter logs based on new date range
+    const startTimestamp = startDate ? new Date(startDate).getTime() : 0;
+    const endTimestamp = new Date(newEndDate);
+    // Set end date to the end of the day
+    endTimestamp.setHours(23, 59, 59, 999);
+
+    filterLogsByDateRange(gitLogs, new Date(startTimestamp), endTimestamp);
+  };
+
+  // Filter logs by date range
+  const filterLogsByDateRange = (logs: GitLog[], start: Date, end: Date) => {
+    const filtered = logs.filter((log) => {
+      const commitDate = new Date(log.date);
+      return commitDate >= start && commitDate <= end;
+    });
+
+    setFilteredLogs(filtered);
+  };
+
+  // Reset date filter
+  const resetDateFilter = () => {
+    if (gitLogs && gitLogs.length > 0) {
+      const dates = gitLogs.map((log) => log.date);
+      const minDate = new Date(Math.min(...dates));
+      const maxDate = new Date(Math.max(...dates));
+
+      setStartDate(formatDateForInput(minDate));
+      setEndDate(formatDateForInput(maxDate));
+      setFilteredLogs(gitLogs);
+    }
+  };
 
   // Skip rendering if no data
   if (!gitLogs || gitLogs.length === 0) {
@@ -53,7 +131,7 @@ const GitCharts: React.FC<GitChartsProps> = ({ gitLogs }) => {
   const prepareAuthorData = () => {
     const authorMap = new Map<string, number>();
 
-    gitLogs.forEach((log) => {
+    filteredLogs.forEach((log) => {
       const count = authorMap.get(log.author) || 0;
       authorMap.set(log.author, count + 1);
     });
@@ -104,7 +182,7 @@ const GitCharts: React.FC<GitChartsProps> = ({ gitLogs }) => {
     // Group commits by day
     const dateMap = new Map<string, number>();
 
-    gitLogs.forEach((log) => {
+    filteredLogs.forEach((log) => {
       const date = new Date(log.date).toISOString().split("T")[0];
       const count = dateMap.get(date) || 0;
       dateMap.set(date, count + 1);
@@ -136,7 +214,7 @@ const GitCharts: React.FC<GitChartsProps> = ({ gitLogs }) => {
     // Initialize hours array (0-23)
     const hours = Array(24).fill(0);
 
-    gitLogs.forEach((log) => {
+    filteredLogs.forEach((log) => {
       const hour = new Date(log.date).getHours();
       hours[hour]++;
     });
@@ -168,7 +246,7 @@ const GitCharts: React.FC<GitChartsProps> = ({ gitLogs }) => {
     ];
     const days = Array(7).fill(0);
 
-    gitLogs.forEach((log) => {
+    filteredLogs.forEach((log) => {
       const day = new Date(log.date).getDay();
       days[day]++;
     });
@@ -199,7 +277,7 @@ const GitCharts: React.FC<GitChartsProps> = ({ gitLogs }) => {
     ];
     const counts = [0, 0, 0, 0, 0];
 
-    gitLogs.forEach((log) => {
+    filteredLogs.forEach((log) => {
       const length = log.message.length;
       if (length < 10) counts[0]++;
       else if (length <= 50) counts[1]++;
@@ -237,7 +315,7 @@ const GitCharts: React.FC<GitChartsProps> = ({ gitLogs }) => {
   const prepareAuthorActivityData = () => {
     const authorMap = new Map<string, number>();
 
-    gitLogs.forEach((log) => {
+    filteredLogs.forEach((log) => {
       const count = authorMap.get(log.author) || 0;
       authorMap.set(log.author, count + 1);
     });
@@ -384,21 +462,56 @@ const GitCharts: React.FC<GitChartsProps> = ({ gitLogs }) => {
     <div className="git-charts-container">
       <h2>Git Repository Analytics</h2>
       <p className="git-stats-summary">
-        Total Commits: <strong>{gitLogs.length}</strong> | Authors:{" "}
-        <strong>{new Set(gitLogs.map((log) => log.author)).size}</strong> | Time
-        Range:{" "}
+        Total Commits: <strong>{filteredLogs.length}</strong> | Authors:{" "}
+        <strong>{new Set(filteredLogs.map((log) => log.author)).size}</strong> |
+        Time Range:{" "}
         <strong>
           {new Date(
-            Math.min(...gitLogs.map((log) => log.date))
+            Math.min(...filteredLogs.map((log) => log.date))
           ).toLocaleDateString()}
         </strong>{" "}
         to{" "}
         <strong>
           {new Date(
-            Math.max(...gitLogs.map((log) => log.date))
+            Math.max(...filteredLogs.map((log) => log.date))
           ).toLocaleDateString()}
         </strong>
+        {filteredLogs.length !== gitLogs.length && (
+          <span className="filter-badge"> (Filtered)</span>
+        )}
       </p>
+
+      <div className="date-range-picker">
+        <div className="date-range-inputs">
+          <div className="date-input-group">
+            <label htmlFor="start-date">From:</label>
+            <input
+              type="date"
+              id="start-date"
+              value={startDate}
+              onChange={handleStartDateChange}
+            />
+          </div>
+
+          <div className="date-input-group">
+            <label htmlFor="end-date">To:</label>
+            <input
+              type="date"
+              id="end-date"
+              value={endDate}
+              onChange={handleEndDateChange}
+            />
+          </div>
+        </div>
+
+        <button
+          className="reset-filter-btn"
+          onClick={resetDateFilter}
+          title="Reset to full date range"
+        >
+          Reset
+        </button>
+      </div>
 
       <div className="chart-tabs">
         <button

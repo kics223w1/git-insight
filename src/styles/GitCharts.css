@@ -24,7 +24,7 @@
 
 .git-stats-summary {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.95rem;
   padding: 0 10px;
@@ -32,6 +32,85 @@
 
 .git-stats-summary strong {
   color: #7dc4e4;
+}
+
+.filter-badge {
+  color: #c792ea;
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+/* Date range picker styles */
+.date-range-picker {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 15px;
+}
+
+.date-range-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.date-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.date-input-group label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  min-width: 45px;
+}
+
+.date-input-group input[type="date"] {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.date-input-group input[type="date"]:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.date-input-group input[type="date"]:focus {
+  outline: none;
+  border-color: rgba(125, 196, 228, 0.6);
+  box-shadow: 0 0 0 2px rgba(125, 196, 228, 0.2);
+}
+
+/* Style the calendar icon and dropdown */
+.date-input-group input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+/* Reset button */
+.reset-filter-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-filter-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
 }
 
 .chart-tabs {
@@ -109,6 +188,25 @@
 
   .git-stats-summary {
     font-size: 0.85rem;
+  }
+
+  .date-range-picker {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .date-input-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .date-input-group label {
+    min-width: auto;
+  }
+
+  .date-input-group input[type="date"] {
+    width: 100%;
   }
 }
 
