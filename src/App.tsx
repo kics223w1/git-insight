@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="landing-page">
       <div className="content">
-        <h1>Insight your Repository</h1>
+        <h1>Repository Insights</h1>
         <div className="github-link">
           <a
             href="https://github.com/kics223w1/git-insight"
@@ -20,7 +20,7 @@ function App() {
           </a>
         </div>
         <p className="tagline">
-          Show beautiful charts and graphs from your git log output.txt file
+          Visualize your git history with insightful charts and graphs
         </p>
 
         <GitCommand />
