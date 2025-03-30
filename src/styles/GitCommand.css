@@ -1,0 +1,70 @@
+/* Command box styles */
+.command-box {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 25px;
+  margin: 2rem auto;
+  max-width: 700px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.command-box h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #c792ea;
+}
+
+.command-display {
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 15px;
+  font-family: "Fira Code", "Consolas", monospace;
+  text-align: left;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.command-display code {
+  font-size: 1.1rem;
+  color: #7dc4e4;
+}
+
+.copy-options {
+  display: flex;
+  justify-content: center;
+}
+
+.copy-btn {
+  padding: 12px 40px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.copy-btn.copied {
+  background: #4caf50;
+  border-color: #4caf50;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .command-display {
+    padding: 12px 15px;
+  }
+
+  .command-display code {
+    font-size: 0.95rem;
+  }
+}
