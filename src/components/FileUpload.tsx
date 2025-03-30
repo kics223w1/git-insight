@@ -1,12 +1,17 @@
 import { useState, useRef } from "react";
 import "../styles/FileUpload.css";
+import GitLogService, { GitLog } from "../services/GitLogService";
 
 const FileUpload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [uploadStatus, setUploadStatus] = useState("");
+  const [gitLogs, setGitLogs] = useState<GitLog[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Get the GitLogService instance
+  const gitLogService = GitLogService.getInstance();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -16,6 +21,7 @@ const FileUpload: React.FC = () => {
   const validateAndSetFile = (selectedFile: File | undefined) => {
     setErrorMessage("");
     setUploadStatus("");
+    setGitLogs([]);
 
     if (!selectedFile) return;
 
@@ -57,15 +63,40 @@ const FileUpload: React.FC = () => {
     // Simulate upload process
     setUploadStatus("uploading");
 
-    // In a real app, you would use fetch or axios to upload the file to a server
-    setTimeout(() => {
-      setUploadStatus("success");
-      // Reset after 3 seconds
-      setTimeout(() => {
-        setFile(null);
+    // Read the file content and parse it using GitLogService
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      try {
+        const content = event.target?.result as string;
+        const parsedLogs = gitLogService.parseGitLog(content);
+
+        setGitLogs(parsedLogs);
+        setUploadStatus("success");
+
+        // Log the parsed data to the console for debugging
+        console.log("Parsed Git Logs:", parsedLogs);
+
+        // Reset file state after 3 seconds while keeping the parsed data
+        setTimeout(() => {
+          setFile(null);
+          setUploadStatus("");
+        }, 3000);
+      } catch (error) {
+        console.error("Error parsing git log:", error);
+        setErrorMessage(
+          "Failed to parse git log file. Please ensure it's a valid git log format."
+        );
         setUploadStatus("");
-      }, 3000);
-    }, 1500);
+      }
+    };
+
+    reader.onerror = () => {
+      setErrorMessage("Failed to read file. Please try again.");
+      setUploadStatus("");
+    };
+
+    reader.readAsText(file);
   };
 
   const triggerFileInput = () => {
@@ -177,6 +208,12 @@ const FileUpload: React.FC = () => {
             "Upload"
           )}
         </button>
+      )}
+
+      {gitLogs.length > 0 && (
+        <div className="parsed-stats">
+          <p>{gitLogs.length} commits processed successfully</p>
+        </div>
       )}
     </div>
   );
