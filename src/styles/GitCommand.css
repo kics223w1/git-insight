@@ -7,6 +7,8 @@
   max-width: 700px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 .command-box h2 {
@@ -15,15 +17,23 @@
   color: #c792ea;
 }
 
+.command-content {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 15px;
+}
+
 .command-display {
   background: #1a1a1a;
   border-radius: 8px;
   padding: 16px 20px;
-  margin-bottom: 15px;
+  margin-bottom: 0;
   font-family: "Fira Code", "Consolas", monospace;
   text-align: left;
   overflow-x: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 1;
 }
 
 .command-display code {
@@ -34,10 +44,12 @@
 .copy-options {
   display: flex;
   justify-content: center;
+  align-items: stretch;
+  height: 100%;
 }
 
 .copy-btn {
-  padding: 12px 40px;
+  padding: 0 40px;
   background: rgba(255, 255, 255, 0.08);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -46,6 +58,11 @@
   font-weight: 500;
   transition: all 0.2s ease;
   min-width: 120px;
+  white-space: nowrap;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .copy-btn:hover {
@@ -60,11 +77,116 @@
 }
 
 @media (max-width: 768px) {
+  .command-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .command-display {
     padding: 12px 15px;
+    margin-bottom: 15px;
   }
 
   .command-display code {
     font-size: 0.95rem;
+  }
+}
+
+.git-command-container {
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  margin: 2rem auto;
+  max-width: 700px;
+  transition: all 0.2s ease;
+}
+
+.git-command-header {
+  margin-bottom: 1rem;
+}
+
+.git-command-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+  color: #c792ea;
+}
+
+.git-command-description {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.git-command-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.git-command-box:hover,
+.git-command-box.hovered {
+  background-color: #222;
+  transform: translateY(-2px);
+}
+
+.git-command-box code {
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 1.1rem;
+  color: #7dc4e4;
+}
+
+.git-command-copy {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 80px;
+  text-align: center;
+}
+
+.git-command-box:hover .git-command-copy,
+.git-command-box.hovered .git-command-copy {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.git-command-copy:hover {
+  transform: translateY(-1px);
+}
+
+.git-command-copy.copied {
+  background-color: #4caf50;
+  border-color: #4caf50;
+}
+
+.git-command-feedback {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #4caf50;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -1,29 +1,54 @@
 import { useState } from "react";
 import "../styles/GitCommand.css";
 
-const GitCommand: React.FC = () => {
+interface GitCommandProps {
+  command?: string;
+  description?: string;
+  title?: string;
+}
+
+const GitCommand: React.FC<GitCommandProps> = ({
+  command = "git log > output.txt",
+  description = "Saves git commit history to a text file",
+  title = "Generate Git Log",
+}) => {
   const [copied, setCopied] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText("git log > output.txt").then(() => {
+    navigator.clipboard.writeText(command).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
   };
 
   return (
-    <div className="command-box">
-      <div className="command-display">
-        <code>git log &gt; output.txt</code>
+    <div className="git-command-container">
+      <div className="git-command-header">
+        <h2>{title}</h2>
+        {description && (
+          <p className="git-command-description">{description}</p>
+        )}
       </div>
-      <div className="copy-options">
+
+      <div
+        className={`git-command-box ${hovered ? "hovered" : ""}`}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onClick={copyToClipboard}
+      >
+        <code>{command}</code>
         <button
-          className={`copy-btn ${copied ? "copied" : ""}`}
-          onClick={copyToClipboard}
+          className={`git-command-copy ${copied ? "copied" : ""}`}
+          aria-label="Copy to clipboard"
         >
-          {copied ? "Copied!" : "Copy"}
+          {copied ? "✓" : "Copy"}
         </button>
       </div>
+
+      {copied && (
+        <div className="git-command-feedback">Command copied to clipboard!</div>
+      )}
     </div>
   );
 };
