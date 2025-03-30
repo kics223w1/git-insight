@@ -209,10 +209,10 @@ const FileUpload: React.FC = () => {
                 >
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
-                Uploaded
+                Show charts
               </>
             ) : (
-              "Upload"
+              "Show charts"
             )}
           </button>
         )}
@@ -224,7 +224,11 @@ const FileUpload: React.FC = () => {
         )}
       </div>
 
-      {showCharts && gitLogs.length > 0 && <GitCharts gitLogs={gitLogs} />}
+      {showCharts && gitLogs.length > 0 && (
+        <>
+          <GitCharts gitLogs={gitLogs} />
+        </>
+      )}
     </>
   );
 };
