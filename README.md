@@ -2,8 +2,6 @@
 
 Git Insight is a powerful analytics tool that visualizes your git repository data to provide meaningful insights about your development patterns.
 
-![Application Interface](/img1.app.png)
-_Main dashboard showing repository analytics_
+![Visualization Example](https://github.com/kics223w1/git-insight/blob/main/public/img2.png)
 
-![Visualization Example](/img2.png)
-_Detailed commit visualization with contributor insights_
+![Application Interface](https://github.com/kics223w1/git-insight/blob/main/public/img1.app.png)
