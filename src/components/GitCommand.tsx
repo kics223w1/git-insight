@@ -4,13 +4,6 @@ import "../styles/GitCommand.css";
 const GitCommand: React.FC = () => {
     const [copied, setCopied] = useState(false);
 
-    const copyToClipboard = () => {
-        navigator.clipboard.writeText("git log > output.txt").then(() => {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        });
-    };
-
     return (
         <div className="command-box">
             <div className="command-display">
