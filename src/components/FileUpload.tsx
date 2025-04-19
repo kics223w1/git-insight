@@ -172,11 +172,6 @@ const FileUpload: React.FC = () => {
                   <line x1="16" y1="13" x2="8" y2="13"></line>
             </div>
           )}
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
                 Uploaded
