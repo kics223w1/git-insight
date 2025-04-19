@@ -173,9 +173,6 @@ const FileUpload: React.FC = () => {
             </div>
           )}
         </div>
-              uploadStatus === "uploading" || uploadStatus === "success"
-            }
-          >
             {uploadStatus === "uploading" ? (
               <div className="spinner"></div>
             ) : uploadStatus === "success" ? (
