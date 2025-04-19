@@ -10,15 +10,12 @@ const GitCommand: React.FC = () => {
       setTimeout(() => setCopied(false), 2000);
     });
   };
-
-  return (
-    <div className="command-box">
-      <div className="command-display">
-        <code>git log &gt; output.txt</code>
-      </div>
-      <div className="copy-options">
-        <button
-          className={`copy-btn ${copied ? "copied" : ""}`}
+  qwfqwfq
+  qwf
+  qw
+  fqw
+  fq
+  wf
           onClick={copyToClipboard}
         >
           {copied ? "Copied!" : "Copy"}
@@ -27,5 +24,12 @@ const GitCommand: React.FC = () => {
     </div>
   );
 };
+
+
+qwfqwfqw
+fqwf
+qw
+fq
+<WebGLBufferqwf>qwf</WebGLBufferqwf>
 
 export default GitCommand;
