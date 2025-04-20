@@ -52,17 +52,6 @@ const FileUpload: React.FC = () => {
     setIsDragging(false);
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-
-    const droppedFile = e.dataTransfer.files[0];
-    validateAndSetFile(droppedFile);
-  };
-
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
-  };
 
   return (
     <>
