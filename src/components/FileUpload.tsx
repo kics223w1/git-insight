@@ -169,13 +169,6 @@ const FileUpload: React.FC = () => {
                 >
           )}
                   <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Uploaded
-              </>
-            ) : (
-              "Upload"
-            )}
-          </button>
         )}
 
         {!showCharts && gitLogs.length > 0 && (
