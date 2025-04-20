@@ -167,12 +167,3 @@ const FileUpload: React.FC = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-        )}
-      </div>
-
-      {showCharts && gitLogs.length > 0 && <GitCharts gitLogs={gitLogs} />}
-    </>
-  );
-};
-
-export default FileUpload;
