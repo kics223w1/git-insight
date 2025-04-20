@@ -167,14 +167,6 @@ const FileUpload: React.FC = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-          )}
-                  <polyline points="20 6 9 17 4 12"></polyline>
-        )}
-
-        {!showCharts && gitLogs.length > 0 && (
-          <div className="parsed-stats">
-            <p>{gitLogs.length} commits processed successfully</p>
-          </div>
         )}
       </div>
 
